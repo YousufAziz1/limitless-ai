@@ -78,7 +78,6 @@ export function SetupPage({ onConnected }: { onConnected: () => void }) {
 
   const [progress, setProgress] = useState<SetupProgress | null>(null)
   const [started, setStarted] = useState(false)
-  const [pollCount, setPollCount] = useState(0)
 
   // Web mode: poll count for display
   const handleReady = useCallback(() => {
@@ -94,11 +93,6 @@ export function SetupPage({ onConnected }: { onConnected: () => void }) {
       setProgress(data)
       if (data.phase === 'ready') setTimeout(onConnected, 1200)
     })
-  }
-
-  // Web polling counter
-  if (!isElectron()) {
-    setTimeout(() => setPollCount(c => c + 1), 3000)
   }
 
   const handleStart = (model: ModelOption) => {
@@ -278,36 +272,66 @@ export function SetupPage({ onConnected }: { onConnected: () => void }) {
           </AnimatePresence>
 
         ) : (
-          /* ═══ WEB MODE: Connection waiting ═══ */
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
-            <div
-              className="flex items-center gap-3 px-4 py-3 rounded-2xl"
-              style={{ background: 'rgba(255,107,26,0.05)', border: '1px solid rgba(255,255,255,0.06)' }}
-            >
-              <WifiOff className="w-4 h-4 flex-shrink-0" style={{ color: 'rgba(255,255,255,0.3)' }} />
-              <div>
-                <p className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>
-                  {isHindi ? 'लोकल AI ढूंढ रहे हैं...' : 'Searching for local AI...'}
-                </p>
-                <p className="text-xs" style={{ color: 'var(--text-faint)' }}>
-                  {pollCount} {isHindi ? 'बार जाँचा' : 'checks'}
-                </p>
-              </div>
+          /* ═══ WEB MODE: Beautiful connect page ═══ */
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
+
+            {/* Hero message */}
+            <div className="text-center space-y-2">
+              <h2 className="text-xl font-bold" style={{ color: 'var(--text-primary)' }}>
+                {isHindi ? 'AI को अपने डिवाइस पर चलाएं' : 'Run AI on Your Device'}
+              </h2>
+              <p className="text-sm leading-relaxed" style={{ color: 'var(--text-muted)' }}>
+                {isHindi
+                  ? 'Limitless AI आपके कंप्यूटर पर चलता है — पूरी तरह मुफ्त, प्राइवेट, और ऑफलाइन।'
+                  : 'Limitless AI runs locally on your computer — completely free, private, and offline.'}
+              </p>
             </div>
 
-            <div className="text-sm space-y-2 p-4 rounded-2xl" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}>
-              <p className="font-medium" style={{ color: 'var(--text-muted)' }}>
-                {isHindi ? 'अपने कंप्यूटर पर चलाएं:' : 'Run on your computer:'}
-              </p>
-              {['ollama pull gemma4:e4b', '.\\start.bat'].map(cmd => (
-                <div key={cmd} className="flex items-center gap-2 px-3 py-2 rounded-lg" style={{ background: 'rgba(0,0,0,0.4)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                  <span style={{ color: '#FF6B1A', fontFamily: 'monospace', fontSize: 11 }}>$</span>
-                  <code className="text-xs flex-1" style={{ color: '#e8e8f0', fontFamily: 'JetBrains Mono, monospace' }}>{cmd}</code>
+            {/* Benefits */}
+            <div className="grid grid-cols-3 gap-3">
+              {[
+                { emoji: '🔒', label: isHindi ? 'प्राइवेट' : 'Private', desc: isHindi ? 'डेटा आपके डिवाइस पर' : 'Data stays on device' },
+                { emoji: '⚡', label: isHindi ? 'मुफ्त' : 'Free', desc: isHindi ? 'कोई API खर्चा नहीं' : 'No API costs ever' },
+                { emoji: '📡', label: isHindi ? 'ऑफलाइन' : 'Offline', desc: isHindi ? 'बिना इंटरनेट काम करे' : 'Works without internet' },
+              ].map(b => (
+                <div key={b.label} className="text-center p-3 rounded-xl" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}>
+                  <div className="text-2xl mb-1">{b.emoji}</div>
+                  <p className="text-xs font-semibold" style={{ color: 'var(--text-primary)' }}>{b.label}</p>
+                  <p className="text-xs mt-0.5" style={{ color: 'var(--text-faint)' }}>{b.desc}</p>
                 </div>
               ))}
-              <p className="text-xs mt-2" style={{ color: 'var(--text-faint)' }}>
-                💡 {isHindi ? 'बैकएंड चालू होते ही यह पेज खुद अनलॉक हो जाएगा' : 'This page auto-unlocks when your backend starts'}
-              </p>
+            </div>
+
+            {/* Download CTA */}
+            <a
+              href="https://github.com/YousufAziz1/limitless-ai"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5"
+              style={{
+                background: 'linear-gradient(135deg, #FF6B1A, #FF9A3C)',
+                color: '#fff',
+                boxShadow: '0 8px 30px rgba(255,107,26,0.3)',
+              }}
+            >
+              <Download className="w-4 h-4" />
+              {isHindi ? 'डेस्कटॉप ऐप डाउनलोड करें' : 'Download Desktop App'}
+            </a>
+
+            {/* Already have it? */}
+            <div
+              className="flex items-center gap-3 px-4 py-3 rounded-xl"
+              style={{ background: 'rgba(255,107,26,0.04)', border: '1px solid rgba(255,255,255,0.05)' }}
+            >
+              <WifiOff className="w-4 h-4 flex-shrink-0" style={{ color: 'rgba(255,255,255,0.25)' }} />
+              <div>
+                <p className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>
+                  {isHindi ? 'पहले से इंस्टॉल है? बस बैकएंड चालू करें' : 'Already installed? Just start the backend'}
+                </p>
+                <p className="text-xs mt-0.5" style={{ color: 'var(--text-faint)' }}>
+                  {isHindi ? 'यह पेज ऑटो-अनलॉक हो जाएगा' : 'This page auto-unlocks when detected'}
+                </p>
+              </div>
             </div>
           </motion.div>
         )}
