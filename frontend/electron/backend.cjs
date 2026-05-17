@@ -107,7 +107,7 @@ async function startBackend(onProgress) {
       if (!fs.existsSync(pyPath)) {
         throw new Error(`Backend not found. Expected: ${mainExe}`)
       }
-      backendProcess = spawn('python', [pyPath], {
+      backendProcess = spawn('python', [`"${pyPath}"`], {
         cwd: fallbackBackend,
         stdio: ['ignore', 'pipe', 'pipe'],
         windowsHide: true,
@@ -116,7 +116,8 @@ async function startBackend(onProgress) {
       })
     } else {
       // shell:true fixes 'spawn EFTYPE' on Windows with PyInstaller executables
-      backendProcess = spawn(mainExe, [], {
+      // MUST wrap mainExe in quotes because shell:true passes it to cmd.exe and paths with spaces will fail
+      backendProcess = spawn(`"${mainExe}"`, [], {
         cwd: backendPath,
         stdio: ['ignore', 'pipe', 'pipe'],
         windowsHide: true,
