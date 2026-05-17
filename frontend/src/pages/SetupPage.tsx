@@ -293,20 +293,20 @@ export function SetupPage({ onConnected }: { onConnected: () => void }) {
                 {
                   num: '1',
                   emoji: '⬇️',
-                  title: isHindi ? 'ZIP डाउनलोड करो' : 'Download ZIP',
-                  desc: isHindi ? 'नीचे बटन दबाओ — एक फाइल डाउनलोड होगी' : 'Click the button below — a file will download',
+                  title: isHindi ? 'डाउनलोड करें' : 'Download App',
+                  desc: isHindi ? 'नीचे दिए गए बटन से LimitlessAISetup.exe डाउनलोड करें।' : 'Click below to download LimitlessAISetup.exe.',
                 },
                 {
                   num: '2',
-                  emoji: '📦',
-                  title: isHindi ? 'Extract करो' : 'Extract the ZIP',
-                  desc: isHindi ? 'डाउनलोड हुई ZIP पर Right Click → Extract All' : 'Right-click the ZIP → Extract All',
+                  emoji: '🚀',
+                  title: isHindi ? 'इंस्टॉल करें' : '1-Click Install',
+                  desc: isHindi ? 'डाउनलोड हुई फाइल पर डबल-क्लिक करें, सब कुछ अपने आप सेट हो जाएगा!' : 'Double-click the downloaded file, everything sets up automatically!',
                 },
                 {
                   num: '3',
-                  emoji: '🚀',
-                  title: isHindi ? 'install.bat चलाओ' : 'Run install.bat',
-                  desc: isHindi ? 'फोल्डर खोलो → install.bat पर डबल क्लिक → सब अपने आप!' : 'Open the folder → double-click install.bat → all automatic!',
+                  emoji: '🎓',
+                  title: isHindi ? 'सीखना शुरू करें' : 'Start Learning',
+                  desc: isHindi ? 'डेस्कटॉप से Limitless AI खोलें और अपना ऑफलाइन AI टीचर पाएं।' : 'Open Limitless AI from your desktop and meet your offline AI teacher.',
                 },
               ].map(step => (
                 <div
@@ -335,8 +335,7 @@ export function SetupPage({ onConnected }: { onConnected: () => void }) {
 
             {/* Big Download Button */}
             <a
-              href="https://github.com/YousufAziz1/limitless-ai/archive/refs/heads/main.zip"
-              download
+              href="https://github.com/YousufAziz1/limitless-ai/releases/latest/download/LimitlessAISetup.exe"
               className="flex items-center justify-center gap-3 w-full py-4 rounded-xl text-base font-bold transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
               style={{
                 background: 'linear-gradient(135deg, #FF6B1A, #FF9A3C)',
