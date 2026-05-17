@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { CheckCircle2, Cpu, Terminal, Download, Zap, WifiOff } from 'lucide-react'
+import { CheckCircle2, Cpu, Terminal, Download, Zap } from 'lucide-react'
 import { useElectronSetup, isElectron } from '@/hooks/useElectronSetup'
 import { useAppStore } from '@/store/appStore'
 import type { SetupProgress } from '@/hooks/useElectronSetup'
