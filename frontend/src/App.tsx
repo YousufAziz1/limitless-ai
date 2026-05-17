@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { HashRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Toaster } from 'react-hot-toast'
 import { Navbar } from '@/components/layout/Navbar'
@@ -171,7 +171,7 @@ function AppContent() {
   }
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <CursorGlow />
       <AppRoutes />
       <Toaster
@@ -186,7 +186,7 @@ function AppContent() {
           },
         }}
       />
-    </BrowserRouter>
+    </HashRouter>
   )
 }
 
