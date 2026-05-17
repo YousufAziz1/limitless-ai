@@ -293,20 +293,20 @@ export function SetupPage({ onConnected }: { onConnected: () => void }) {
                 {
                   num: '1',
                   emoji: '⬇️',
-                  title: isHindi ? 'ऐप डाउनलोड करो' : 'Download the App',
-                  desc: isHindi ? 'नीचे बटन दबाओ और ऐप डाउनलोड करो' : 'Click the button below to get the app',
+                  title: isHindi ? 'ZIP डाउनलोड करो' : 'Download ZIP',
+                  desc: isHindi ? 'नीचे बटन दबाओ — एक फाइल डाउनलोड होगी' : 'Click the button below — a file will download',
                 },
                 {
                   num: '2',
                   emoji: '📦',
-                  title: isHindi ? 'इंस्टॉल करो' : 'Install It',
-                  desc: isHindi ? 'डाउनलोड हुई फाइल पर डबल क्लिक करो' : 'Double-click the downloaded file to install',
+                  title: isHindi ? 'Extract करो' : 'Extract the ZIP',
+                  desc: isHindi ? 'डाउनलोड हुई ZIP पर Right Click → Extract All' : 'Right-click the ZIP → Extract All',
                 },
                 {
                   num: '3',
                   emoji: '🚀',
-                  title: isHindi ? 'खोलो और पढ़ो!' : 'Open & Start Learning!',
-                  desc: isHindi ? 'ऐप खुलेगा और AI अपने आप तैयार हो जाएगा' : 'The app opens and AI sets up automatically',
+                  title: isHindi ? 'install.bat चलाओ' : 'Run install.bat',
+                  desc: isHindi ? 'फोल्डर खोलो → install.bat पर डबल क्लिक → सब अपने आप!' : 'Open the folder → double-click install.bat → all automatic!',
                 },
               ].map(step => (
                 <div
