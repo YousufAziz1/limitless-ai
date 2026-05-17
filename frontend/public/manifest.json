@@ -1,0 +1,16 @@
+{
+  "name": "Limitless AI",
+  "short_name": "Limitless",
+  "description": "Offline AI School for Every Child",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0C0C10",
+  "theme_color": "#FF6B1A",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
