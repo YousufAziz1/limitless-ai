@@ -8,8 +8,8 @@ const fs = require('fs')
 const path = require('path')
 const os = require('os')
 
-const OLLAMA_WINDOWS_URL = 'https://ollama.ai/download/OllamaSetup.exe'
-const OLLAMA_MAC_URL = 'https://ollama.ai/download/Ollama-darwin.zip'
+const OLLAMA_WINDOWS_URL = 'https://ollama.com/download/OllamaSetup.exe'
+const OLLAMA_MAC_URL = 'https://ollama.com/download/Ollama-darwin.zip'
 
 /**
  * Check if Ollama is installed and reachable
@@ -77,8 +77,8 @@ function downloadFile(url, destPath, onProgress) {
  */
 function installOllamaWindows(installerPath) {
   return new Promise((resolve, reject) => {
-    // /S = silent, /D = install dir (optional)
-    execFile(installerPath, ['/S'], (err) => {
+    // /S = silent install flag for NSIS-based Ollama installer
+    execFile(installerPath, ['/S'], { windowsHide: true }, (err) => {
       if (err) reject(err)
       else resolve()
     })
@@ -90,8 +90,7 @@ function installOllamaWindows(installerPath) {
  */
 function installOllamaMac(zipPath) {
   return new Promise((resolve, reject) => {
-    const destDir = path.join(os.homedir(), 'Applications')
-    exec(`unzip -o "${zipPath}" -d "${destDir}"`, (err) => {
+    exec(`open "${zipPath}"`, (err) => {
       if (err) reject(err)
       else resolve()
     })

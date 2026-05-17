@@ -10,8 +10,8 @@ const fs = require('fs')
 let backendProcess = null
 
 const BACKEND_URL = 'http://localhost:8000/api/health'
-const MAX_WAIT_MS = 30000
-const POLL_INTERVAL_MS = 1500
+const MAX_WAIT_MS = 90000   // 90s — PyInstaller single-file exe needs time to extract
+const POLL_INTERVAL_MS = 2000
 
 /**
  * Check if backend is already running
