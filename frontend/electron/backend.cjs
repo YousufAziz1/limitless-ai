@@ -97,17 +97,33 @@ async function startBackend(onProgress) {
       detached: false,
     })
   } else {
-    // Production Mode (Standalone EXE)
+    // Production Mode (Standalone PyInstaller EXE)
     const mainExe = path.join(backendPath, 'main.exe')
     if (!fs.existsSync(mainExe)) {
-      throw new Error(`Backend executable not found at: ${mainExe}`)
+      // Fallback: try spawning python if exe not found
+      console.error(`[Backend] main.exe not found at ${mainExe}, trying python fallback`)
+      const fallbackBackend = path.join(process.resourcesPath, '..', 'backend')
+      const pyPath = path.join(fallbackBackend, 'main.py')
+      if (!fs.existsSync(pyPath)) {
+        throw new Error(`Backend not found. Expected: ${mainExe}`)
+      }
+      backendProcess = spawn('python', [pyPath], {
+        cwd: fallbackBackend,
+        stdio: ['ignore', 'pipe', 'pipe'],
+        windowsHide: true,
+        shell: true,
+        detached: false,
+      })
+    } else {
+      // shell:true fixes 'spawn EFTYPE' on Windows with PyInstaller executables
+      backendProcess = spawn(mainExe, [], {
+        cwd: backendPath,
+        stdio: ['ignore', 'pipe', 'pipe'],
+        windowsHide: true,
+        shell: true,
+        detached: false,
+      })
     }
-    backendProcess = spawn(mainExe, [], {
-      cwd: backendPath,
-      stdio: ['ignore', 'pipe', 'pipe'],
-      windowsHide: true,
-      detached: false,
-    })
   }
 
   backendProcess.stdout.on('data', (data) => {
