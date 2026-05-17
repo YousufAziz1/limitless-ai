@@ -335,9 +335,8 @@ export function SetupPage({ onConnected }: { onConnected: () => void }) {
 
             {/* Big Download Button */}
             <a
-              href="https://github.com/YousufAziz1/limitless-ai"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="https://github.com/YousufAziz1/limitless-ai/archive/refs/heads/main.zip"
+              download
               className="flex items-center justify-center gap-3 w-full py-4 rounded-xl text-base font-bold transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
               style={{
                 background: 'linear-gradient(135deg, #FF6B1A, #FF9A3C)',
