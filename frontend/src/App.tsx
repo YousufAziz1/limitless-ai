@@ -15,6 +15,47 @@ import { useAppStore } from '@/store/appStore'
 import { checkHealth } from '@/services/api'
 
 // ══════════════════════════════════════════
+// RequireBackend — Gates AI pages behind setup
+// Landing page stays always accessible
+// ══════════════════════════════════════════
+
+function RequireBackend({ children }: { children: React.ReactNode }) {
+  const { updateModelStatus } = useAppStore()
+  const [checking, setChecking] = useState(true)
+  const [available, setAvailable] = useState(false)
+
+  useEffect(() => {
+    const check = async () => {
+      const status = await checkHealth()
+      updateModelStatus(status)
+      setAvailable(status.available)
+      setChecking(false)
+    }
+    check()
+  }, [updateModelStatus])
+
+  if (checking) {
+    return (
+      <div className="flex items-center justify-center" style={{ height: 'calc(100vh - 88px)', marginTop: '88px' }}>
+        <div className="w-6 h-6 border-2 border-current border-t-transparent rounded-full animate-spin" style={{ color: '#FF6B1A' }} />
+      </div>
+    )
+  }
+
+  if (!available) {
+    return (
+      <SetupPage
+        onConnected={() => {
+          setAvailable(true)
+        }}
+      />
+    )
+  }
+
+  return <>{children}</>
+}
+
+// ══════════════════════════════════════════
 // App Router — Animated page transitions
 // ══════════════════════════════════════════
 
@@ -29,50 +70,61 @@ function AppRoutes() {
       <main>
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
+            {/* Landing page — ALWAYS accessible, no backend needed */}
             <Route path="/" element={<LandingPage />} />
+
+            {/* AI features — require backend */}
             <Route path="/chat" element={
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.25 }}
-                style={{ height: 'calc(100vh - 88px)', overflow: 'hidden', marginTop: '88px' }}
-              >
-                <ChatPage />
-              </motion.div>
+              <RequireBackend>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.25 }}
+                  style={{ height: 'calc(100vh - 88px)', overflow: 'hidden', marginTop: '88px' }}
+                >
+                  <ChatPage />
+                </motion.div>
+              </RequireBackend>
             } />
             <Route path="/dream" element={
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-                style={{ marginTop: '88px' }}
-              >
-                <DreamBuilderPage />
-              </motion.div>
+              <RequireBackend>
+                <motion.div
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  style={{ marginTop: '88px' }}
+                >
+                  <DreamBuilderPage />
+                </motion.div>
+              </RequireBackend>
             } />
             <Route path="/subjects" element={
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-                style={{ marginTop: '88px' }}
-              >
-                <SubjectsPage />
-              </motion.div>
+              <RequireBackend>
+                <motion.div
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  style={{ marginTop: '88px' }}
+                >
+                  <SubjectsPage />
+                </motion.div>
+              </RequireBackend>
             } />
             <Route path="/scan" element={
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-                style={{ marginTop: '88px' }}
-              >
-                <HomeworkScannerPage />
-              </motion.div>
+              <RequireBackend>
+                <motion.div
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  style={{ marginTop: '88px' }}
+                >
+                  <HomeworkScannerPage />
+                </motion.div>
+              </RequireBackend>
             } />
           </Routes>
         </AnimatePresence>
@@ -82,29 +134,21 @@ function AppRoutes() {
 }
 
 // ══════════════════════════════════════════
-// App — Root with health checks
+// App — Root with loading screen
 // ══════════════════════════════════════════
 
 function AppContent() {
   const { showLoadingScreen, setShowLoadingScreen, updateModelStatus, setFirstVisit } = useAppStore()
-  const [showSetup, setShowSetup] = useState(false)
 
-  // Check backend health on mount
   useEffect(() => {
     const init = async () => {
-      // Show loading screen for at least 2.5s
       await new Promise(resolve => setTimeout(resolve, 2500))
       setShowLoadingScreen(false)
       setFirstVisit(false)
 
-      // Check if backend is available
+      // Non-blocking health check
       const status = await checkHealth()
       updateModelStatus(status)
-
-      // If backend offline → show setup page
-      if (!status.available) {
-        setShowSetup(true)
-      }
     }
     init()
   }, [setShowLoadingScreen, setFirstVisit, updateModelStatus])
@@ -122,27 +166,6 @@ function AppContent() {
     return (
       <AnimatePresence>
         <LoadingScreen key="loading" />
-      </AnimatePresence>
-    )
-  }
-
-  // New user setup flow — backend not running
-  if (showSetup) {
-    return (
-      <AnimatePresence>
-        <motion.div
-          key="setup"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0, scale: 0.98 }}
-          transition={{ duration: 0.5 }}
-        >
-          <SetupPage
-            onConnected={() => {
-              setShowSetup(false)
-            }}
-          />
-        </motion.div>
       </AnimatePresence>
     )
   }
