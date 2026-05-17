@@ -11,7 +11,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "electron:dev": "concurrently \"vite\" \"wait-on http://localhost:5173 && cross-env NODE_ENV=development electron .\"",
-    "electron:build": "pnpm build && electron-builder --win"
+    "electron:build": "cross-env ELECTRON=true pnpm build && electron-builder --win"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.15",
@@ -73,8 +73,14 @@
       }
     ],
     "win": {
-      "target": "squirrel"
+      "target": "nsis",
+      "icon": "public/icon.ico"
     },
-    "squirrelWindows": {}
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
   }
 }

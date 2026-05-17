@@ -8,6 +8,8 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  // CRITICAL: './' allows Electron file:// protocol to load assets correctly
+  base: process.env.ELECTRON === 'true' ? './' : '/',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
@@ -22,4 +24,4 @@ export default defineConfig({
       },
     },
   },
-}) // Trigger restart
+})
