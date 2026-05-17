@@ -272,67 +272,96 @@ export function SetupPage({ onConnected }: { onConnected: () => void }) {
           </AnimatePresence>
 
         ) : (
-          /* ═══ WEB MODE: Beautiful connect page ═══ */
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
+          /* ═══ WEB MODE: Super simple guide for non-tech users ═══ */
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-5">
 
-            {/* Hero message */}
+            {/* Friendly heading */}
             <div className="text-center space-y-2">
               <h2 className="text-xl font-bold" style={{ color: 'var(--text-primary)' }}>
-                {isHindi ? 'AI को अपने डिवाइस पर चलाएं' : 'Run AI on Your Device'}
+                {isHindi ? '🎯 बस 3 आसान कदम!' : '🎯 Just 3 Easy Steps!'}
               </h2>
-              <p className="text-sm leading-relaxed" style={{ color: 'var(--text-muted)' }}>
+              <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
                 {isHindi
-                  ? 'Limitless AI आपके कंप्यूटर पर चलता है — पूरी तरह मुफ्त, प्राइवेट, और ऑफलाइन।'
-                  : 'Limitless AI runs locally on your computer — completely free, private, and offline.'}
+                  ? 'अपने कंप्यूटर पर AI टीचर चालू करें — बिल्कुल मुफ्त!'
+                  : 'Get your own AI Teacher on your computer — totally free!'}
               </p>
             </div>
 
-            {/* Benefits */}
-            <div className="grid grid-cols-3 gap-3">
+            {/* 3 Steps */}
+            <div className="space-y-3">
               {[
-                { emoji: '🔒', label: isHindi ? 'प्राइवेट' : 'Private', desc: isHindi ? 'डेटा आपके डिवाइस पर' : 'Data stays on device' },
-                { emoji: '⚡', label: isHindi ? 'मुफ्त' : 'Free', desc: isHindi ? 'कोई API खर्चा नहीं' : 'No API costs ever' },
-                { emoji: '📡', label: isHindi ? 'ऑफलाइन' : 'Offline', desc: isHindi ? 'बिना इंटरनेट काम करे' : 'Works without internet' },
-              ].map(b => (
-                <div key={b.label} className="text-center p-3 rounded-xl" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}>
-                  <div className="text-2xl mb-1">{b.emoji}</div>
-                  <p className="text-xs font-semibold" style={{ color: 'var(--text-primary)' }}>{b.label}</p>
-                  <p className="text-xs mt-0.5" style={{ color: 'var(--text-faint)' }}>{b.desc}</p>
+                {
+                  num: '1',
+                  emoji: '⬇️',
+                  title: isHindi ? 'ऐप डाउनलोड करो' : 'Download the App',
+                  desc: isHindi ? 'नीचे बटन दबाओ और ऐप डाउनलोड करो' : 'Click the button below to get the app',
+                },
+                {
+                  num: '2',
+                  emoji: '📦',
+                  title: isHindi ? 'इंस्टॉल करो' : 'Install It',
+                  desc: isHindi ? 'डाउनलोड हुई फाइल पर डबल क्लिक करो' : 'Double-click the downloaded file to install',
+                },
+                {
+                  num: '3',
+                  emoji: '🚀',
+                  title: isHindi ? 'खोलो और पढ़ो!' : 'Open & Start Learning!',
+                  desc: isHindi ? 'ऐप खुलेगा और AI अपने आप तैयार हो जाएगा' : 'The app opens and AI sets up automatically',
+                },
+              ].map(step => (
+                <div
+                  key={step.num}
+                  className="flex items-center gap-4 p-4 rounded-xl transition-all duration-300"
+                  style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}
+                >
+                  <div
+                    className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 text-lg font-bold"
+                    style={{ background: 'rgba(255,107,26,0.12)', color: '#FF6B1A' }}
+                  >
+                    {step.emoji}
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold flex items-center gap-2" style={{ color: 'var(--text-primary)' }}>
+                      <span className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'rgba(255,107,26,0.15)', color: '#FF6B1A' }}>
+                        {step.num}
+                      </span>
+                      {step.title}
+                    </p>
+                    <p className="text-xs mt-0.5" style={{ color: 'var(--text-muted)' }}>{step.desc}</p>
+                  </div>
                 </div>
               ))}
             </div>
 
-            {/* Download CTA */}
+            {/* Big Download Button */}
             <a
               href="https://github.com/YousufAziz1/limitless-ai"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5"
+              className="flex items-center justify-center gap-3 w-full py-4 rounded-xl text-base font-bold transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
               style={{
                 background: 'linear-gradient(135deg, #FF6B1A, #FF9A3C)',
                 color: '#fff',
-                boxShadow: '0 8px 30px rgba(255,107,26,0.3)',
+                boxShadow: '0 8px 30px rgba(255,107,26,0.35)',
               }}
             >
-              <Download className="w-4 h-4" />
-              {isHindi ? 'डेस्कटॉप ऐप डाउनलोड करें' : 'Download Desktop App'}
+              <Download className="w-5 h-5" />
+              {isHindi ? '🎁 मुफ्त डाउनलोड करें' : '🎁 Free Download'}
             </a>
 
-            {/* Already have it? */}
-            <div
-              className="flex items-center gap-3 px-4 py-3 rounded-xl"
-              style={{ background: 'rgba(255,107,26,0.04)', border: '1px solid rgba(255,255,255,0.05)' }}
-            >
-              <WifiOff className="w-4 h-4 flex-shrink-0" style={{ color: 'rgba(255,255,255,0.25)' }} />
-              <div>
-                <p className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>
-                  {isHindi ? 'पहले से इंस्टॉल है? बस बैकएंड चालू करें' : 'Already installed? Just start the backend'}
-                </p>
-                <p className="text-xs mt-0.5" style={{ color: 'var(--text-faint)' }}>
-                  {isHindi ? 'यह पेज ऑटो-अनलॉक हो जाएगा' : 'This page auto-unlocks when detected'}
-                </p>
-              </div>
+            {/* Trust badges */}
+            <div className="flex items-center justify-center gap-4 flex-wrap">
+              {[
+                isHindi ? '✅ कोई पैसा नहीं' : '✅ 100% Free',
+                isHindi ? '🔒 प्राइवेट' : '🔒 Private',
+                isHindi ? '📡 ऑफलाइन' : '📡 Works Offline',
+              ].map(badge => (
+                <span key={badge} className="text-xs px-2 py-1 rounded-full" style={{ background: 'rgba(255,255,255,0.04)', color: 'var(--text-muted)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  {badge}
+                </span>
+              ))}
             </div>
+
           </motion.div>
         )}
 
