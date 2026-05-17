@@ -11,7 +11,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "electron:dev": "concurrently \"vite\" \"wait-on http://localhost:5173 && cross-env NODE_ENV=development electron .\"",
-    "electron:build": "pnpm build && electron-builder"
+    "electron:build": "pnpm build && electron-builder --win"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.15",
@@ -40,7 +40,7 @@
     "concurrently": "^9.2.1",
     "cross-env": "^10.1.0",
     "electron": "^42.1.0",
-    "electron-builder": "^26.8.1",
+    "electron-builder": "^24.13.3",
     "eslint": "^10.2.1",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.2",
@@ -64,26 +64,17 @@
     ],
     "extraResources": [
       {
-        "from": "../backend",
-        "to": "backend",
-        "filter": [
-          "**/*"
-        ]
+        "from": "../backend/dist/main.exe",
+        "to": "backend/main.exe"
+      },
+      {
+        "from": "../backend/.env",
+        "to": "backend/.env"
       }
     ],
     "win": {
-      "target": "nsis",
-      "icon": "public/icon.ico"
+      "target": "squirrel"
     },
-    "mac": {
-      "target": "dmg",
-      "icon": "public/icon.icns"
-    },
-    "nsis": {
-      "oneClick": true,
-      "perMachine": false,
-      "createDesktopShortcut": true,
-      "createStartMenuShortcut": true
-    }
+    "squirrelWindows": {}
   }
 }

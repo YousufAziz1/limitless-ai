@@ -80,22 +80,35 @@ async function startBackend(onProgress) {
   }
 
   const backendPath = getBackendPath()
-  const mainPy = path.join(backendPath, 'main.py')
-
-  if (!fs.existsSync(mainPy)) {
-    throw new Error(`Backend not found at: ${mainPy}`)
-  }
-
+  
   onProgress({ phase: 'backend', percent: 20, message: 'Starting AI Core...' })
 
-  const pythonCmd = getVenvPython(backendPath)
-
-  backendProcess = spawn(pythonCmd, [mainPy], {
-    cwd: backendPath,
-    stdio: ['ignore', 'pipe', 'pipe'],
-    windowsHide: true, // Hide console window on Windows
-    detached: false,
-  })
+  if (process.env.NODE_ENV === 'development' || !process.resourcesPath) {
+    // Development Mode
+    const mainPy = path.join(backendPath, 'main.py')
+    if (!fs.existsSync(mainPy)) {
+      throw new Error(`Backend not found at: ${mainPy}`)
+    }
+    const pythonCmd = getVenvPython(backendPath)
+    backendProcess = spawn(pythonCmd, [mainPy], {
+      cwd: backendPath,
+      stdio: ['ignore', 'pipe', 'pipe'],
+      windowsHide: true,
+      detached: false,
+    })
+  } else {
+    // Production Mode (Standalone EXE)
+    const mainExe = path.join(backendPath, 'main.exe')
+    if (!fs.existsSync(mainExe)) {
+      throw new Error(`Backend executable not found at: ${mainExe}`)
+    }
+    backendProcess = spawn(mainExe, [], {
+      cwd: backendPath,
+      stdio: ['ignore', 'pipe', 'pipe'],
+      windowsHide: true,
+      detached: false,
+    })
+  }
 
   backendProcess.stdout.on('data', (data) => {
     const line = data.toString().trim()
