@@ -54,7 +54,7 @@ async def root():
     return {
         "name": "Limitless AI",
         "tagline": "Offline AI School for Every Child",
-        "model": "gemma3:4b",
+        "model": "gemma4",
         "status": "running",
         "docs": "/docs",
     }
@@ -63,10 +63,6 @@ async def root():
 # ── Dev server entrypoint ─────────────────
 import sys
 if __name__ == "__main__":
-    try:
-        sys.stdout.reconfigure(encoding='utf-8')
-    except Exception:
-        pass
     
     print("""
 ╔══════════════════════════════════════════╗
@@ -74,13 +70,13 @@ if __name__ == "__main__":
 ║   Offline AI School for Every Child      ║
 ╚══════════════════════════════════════════╝
 
-  Model: gemma3:4b (via Ollama)
+  Model: gemma4 (via Ollama)
   API:   http://localhost:8000
   Docs:  http://localhost:8000/docs
   
   Make sure Ollama is running:
     ollama serve
-    ollama pull gemma3:4b
+    ollama pull gemma4
 """)
     uvicorn.run(
         "main:app",

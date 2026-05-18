@@ -24,7 +24,7 @@ interface ModelOption {
 
 const MODEL_OPTIONS: ModelOption[] = [
   {
-    id: 'gemma3:4b',
+    id: 'gemma4',
     label: 'Quick Start',
     labelHi: 'तेज़ शुरुआत',
     size: '~2.5 GB',
@@ -78,6 +78,7 @@ export function SetupPage({ onConnected }: { onConnected: () => void }) {
 
   const [progress, setProgress] = useState<SetupProgress | null>(null)
   const [started, setStarted] = useState(false)
+  const [showModal, setShowModal] = useState(false)
 
   // Web mode: poll count for display
   const handleReady = useCallback(() => {
@@ -293,20 +294,20 @@ export function SetupPage({ onConnected }: { onConnected: () => void }) {
                 {
                   num: '1',
                   emoji: '⬇️',
-                  title: isHindi ? 'डाउनलोड करें' : 'Download App',
-                  desc: isHindi ? 'नीचे दिए गए बटन से LimitlessAISetup.exe डाउनलोड करें।' : 'Click below to download LimitlessAISetup.exe.',
+                  title: isHindi ? 'Ollama इंस्टॉल करें' : 'Install Ollama',
+                  desc: isHindi ? 'ऑफलाइन AI चलाने के लिए Ollama डाउनलोड करें।' : 'Install Ollama to run AI engines offline.',
                 },
                 {
                   num: '2',
                   emoji: '🚀',
-                  title: isHindi ? 'इंस्टॉल करें' : '1-Click Install',
-                  desc: isHindi ? 'डाउनलोड हुई फाइल पर डबल-क्लिक करें, सब कुछ अपने आप सेट हो जाएगा!' : 'Double-click the downloaded file, everything sets up automatically!',
+                  title: isHindi ? 'AI मॉडल डाउनलोड करें' : 'Pull AI Model',
+                  desc: isHindi ? 'अपने टर्मिनल में `ollama pull gemma4` चलाएँ।' : 'Run `ollama pull gemma4` in your terminal.',
                 },
                 {
                   num: '3',
                   emoji: '🎓',
-                  title: isHindi ? 'सीखना शुरू करें' : 'Start Learning',
-                  desc: isHindi ? 'डेस्कटॉप से Limitless AI खोलें और अपना ऑफलाइन AI टीचर पाएं।' : 'Open Limitless AI from your desktop and meet your offline AI teacher.',
+                  title: isHindi ? 'बैकएंड चालू करें' : 'Start Backend',
+                  desc: isHindi ? 'लोकल सर्वर चलाएँ और पेज को रिफ्रेश करें।' : 'Start your local backend and refresh this page.',
                 },
               ].map(step => (
                 <div
@@ -334,10 +335,8 @@ export function SetupPage({ onConnected }: { onConnected: () => void }) {
             </div>
 
             {/* Big Download Button */}
-            <a
-              href="https://github.com/YousufAziz1/limitless-ai/releases/latest/download/LimitlessAISetup.exe"
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              onClick={() => setShowModal(true)}
               className="flex items-center justify-center gap-3 w-full py-4 rounded-xl text-base font-bold transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
               style={{
                 background: 'linear-gradient(135deg, #FF6B1A, #FF9A3C)',
@@ -346,8 +345,8 @@ export function SetupPage({ onConnected }: { onConnected: () => void }) {
               }}
             >
               <Download className="w-5 h-5" />
-              {isHindi ? '🎁 मुफ्त डाउनलोड करें' : '🎁 Free Download'}
-            </a>
+              {isHindi ? 'ऑफ़लाइन AI सेटअप करें' : 'Setup Offline AI'}
+            </button>
 
             {/* Trust badges */}
             <div className="flex items-center justify-center gap-4 flex-wrap">
@@ -374,6 +373,66 @@ export function SetupPage({ onConnected }: { onConnected: () => void }) {
         </motion.div>
 
       </div>
+
+      {/* Manual Setup Modal */}
+      <AnimatePresence>
+        {showModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+            onClick={() => setShowModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              onClick={(e) => e.stopPropagation()}
+              className="w-full max-w-md p-6 rounded-2xl relative overflow-hidden"
+              style={{ background: '#111118', border: '1px solid rgba(255,255,255,0.1)' }}
+            >
+              <div className="absolute top-0 left-0 w-full h-1" style={{ background: 'linear-gradient(90deg, #FF6B1A, #FF9A3C)' }} />
+              
+              <h3 className="text-xl font-bold mb-4" style={{ color: 'var(--text-primary)' }}>
+                {isHindi ? 'मैनुअल सेटअप गाइड' : 'Setup takes only 2 minutes'}
+              </h3>
+              
+              <div className="space-y-4 font-mono text-sm">
+                <div className="p-4 rounded-xl bg-black/40 border border-white/5">
+                  <p className="text-[#FF6B1A] mb-1 font-sans font-semibold">1. Install Ollama</p>
+                  <p className="text-gray-400 font-sans text-xs mb-2">Download and install from ollama.com</p>
+                  <a href="https://ollama.com" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline text-xs">
+                    https://ollama.com
+                  </a>
+                </div>
+                
+                <div className="p-4 rounded-xl bg-black/40 border border-white/5">
+                  <p className="text-[#FF6B1A] mb-1 font-sans font-semibold">2. Run in Terminal</p>
+                  <code className="text-green-400 block bg-black p-2 rounded mt-2 border border-white/10">
+                    ollama pull gemma4
+                  </code>
+                </div>
+                
+                <div className="p-4 rounded-xl bg-black/40 border border-white/5">
+                  <p className="text-[#FF6B1A] mb-1 font-sans font-semibold">3. Start Backend</p>
+                  <p className="text-gray-400 font-sans text-xs">
+                    Start your Limitless AI backend and refresh this page.
+                  </p>
+                </div>
+              </div>
+              
+              <button
+                onClick={() => setShowModal(false)}
+                className="w-full mt-6 py-3 rounded-xl font-bold text-white transition-all duration-300 hover:shadow-lg"
+                style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}
+              >
+                {isHindi ? 'बंद करें' : 'Learn offline forever'}
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

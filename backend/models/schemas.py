@@ -17,7 +17,7 @@ class ChatRequest(BaseModel):
     mode: Optional[Literal["explain", "exam", "revision", "weak"]] = "explain"
     language: Optional[Literal["en", "hi"]] = "en"
     subject: Optional[str] = None
-    model_name: Optional[str] = "gemma3:4b"
+    model_name: Optional[str] = "gemma4"
 
 
 class ModelStatusResponse(BaseModel):

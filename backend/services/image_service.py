@@ -151,7 +151,7 @@ async def stream_image_analysis_gemini(
 
 async def get_best_available_model() -> str:
     """Auto-detect the best available Ollama model for vision tasks."""
-    preferred = ["gemma4:e4b", "gemma3:12b", "gemma3:4b", "llava", "llava:7b"]
+    preferred = ["gemma4", "gemma4:e4b", "gemma3:12b", "gemma3:4b", "llava", "llava:7b"]
     try:
         client = ollama.AsyncClient()
         result = await client.list()
@@ -164,7 +164,7 @@ async def get_best_available_model() -> str:
             return available[0]
     except Exception:
         pass
-    return "gemma3:4b"  # final default
+    return "gemma4"  # final default
 
 
 async def stream_image_analysis_ollama(
@@ -210,7 +210,7 @@ async def stream_image_analysis_ollama(
         err_str = str(e)
         # Model not found — try to pull or fallback
         if "404" in err_str or "not found" in err_str:
-            fallback_model = "gemma3:4b"
+            fallback_model = "gemma4"
             note = (
                 f"⚠️ **Model `{model_name}` not found locally.** "
                 f"Falling back to `{fallback_model}`.\n"

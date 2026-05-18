@@ -6,8 +6,8 @@ const { spawn, exec } = require('child_process')
 
 const MODEL_SIZES = {
   'gemma4:e4b': 9600,   // MB
-  'gemma3:4b': 2500,    // MB
-  'gemma3:12b': 7300,   // MB
+  'gemma4': 2500,    // MB
+  'gemma4:e4b': 7300,   // MB
 }
 
 /**

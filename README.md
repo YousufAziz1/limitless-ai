@@ -9,7 +9,7 @@
 ![Ollama](https://img.shields.io/badge/Runtime-Ollama-000000?style=for-the-badge)
 ![1-Click Install](https://img.shields.io/badge/Setup-1--Click-22C55E?style=for-the-badge)
 
-[Live Demo (Vercel)](https://limitless-ai-mu.vercel.app) · [Download LimitlessAISetup.exe](#-1-click-installation)
+[Live Demo (Vercel)](https://limitless-ai-mu.vercel.app) · [Setup Guide](#-local-installation-for-judges)
 
 </div>
 
@@ -74,19 +74,40 @@ Limitless-ai/
 2. Electron `main.cjs` launches the React UI.
 3. React UI triggers the setup process.
 4. Electron silently downloads/installs Ollama.
-5. Electron pulls the `gemma3:4b` model.
+5. Electron pulls the `gemma4` model.
 6. Electron spawns the bundled `backend/dist/main.exe` (FastAPI).
 7. User starts learning seamlessly.
 
 ---
 
-## 💻 1-Click Installation (For Users)
+## 💻 Local Installation (For Judges)
 
-1. Download `LimitlessAISetup.exe` from the latest GitHub Release.
-2. Run the installer.
-3. Open **Limitless AI** from your desktop.
-4. Watch the beautiful setup animation as it prepares your private AI.
-5. Start learning!
+For the hackathon submission, the 1-click Electron `.exe` installer is temporarily bypassed to ensure smooth local testing. Please follow these simple steps to run Limitless AI natively on your machine:
+
+### 1. Install Ollama
+Download and install [Ollama](https://ollama.com). Then, open your terminal and run:
+```bash
+ollama pull gemma4
+```
+
+### 2. Start the Backend
+Open a terminal in the `backend` folder and run the local FastAPI server:
+```bash
+cd backend
+python -m venv venv
+venv\Scripts\pip install -r requirements.txt
+venv\Scripts\python main.py
+```
+*(The backend runs on `http://localhost:8000`)*
+
+### 3. Start the Frontend
+Open a new terminal in the `frontend` folder and run the React app:
+```bash
+cd frontend
+pnpm install
+pnpm dev
+```
+*(Open `http://localhost:5173` in your browser)*
 
 ---
 
@@ -98,9 +119,8 @@ If you want to build the project from source:
 ```bash
 cd backend
 python -m venv venv
-venv\Scripts\activate
-pip install -r requirements.txt
-build.bat
+venv\Scripts\pip install -r requirements.txt
+.\build.bat
 # This creates backend/dist/main.exe
 ```
 

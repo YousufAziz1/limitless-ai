@@ -70,10 +70,10 @@ OLLAMA_PID=$!
 sleep 3
 
 # Pull Gemma model
-echo -e "${YELLOW}  Pulling gemma3:4b (this may take a few minutes on first run)...${NC}"
+echo -e "${YELLOW}  Pulling gemma4 (this may take a few minutes on first run)...${NC}"
 echo -e "${CYAN}  Model size: ~3GB — perfect for low-end hardware${NC}"
-ollama pull gemma3:4b
-echo -e "${GREEN}  ✓ gemma3:4b ready${NC}"
+ollama pull gemma4
+echo -e "${GREEN}  ✓ gemma4 ready${NC}"
 
 # ── Backend setup ──────────────────────────
 echo ""
@@ -124,7 +124,7 @@ echo -e "${GREEN}║  Frontend:  http://localhost:5173        ║${NC}"
 echo -e "${GREEN}║  Backend:   http://localhost:8000        ║${NC}"
 echo -e "${GREEN}║  API Docs:  http://localhost:8000/docs   ║${NC}"
 echo -e "${GREEN}╠══════════════════════════════════════════╣${NC}"
-echo -e "${GREEN}║  Model:     gemma3:4b (offline)          ║${NC}"
+echo -e "${GREEN}║  Model:     gemma4 (offline)          ║${NC}"
 echo -e "${GREEN}║  Internet:  NOT REQUIRED ✓               ║${NC}"
 echo -e "${GREEN}╚══════════════════════════════════════════╝${NC}"
 echo ""

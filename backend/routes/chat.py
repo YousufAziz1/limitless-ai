@@ -27,7 +27,7 @@ async def chat(request: ChatRequest):
             mode=request.mode or "explain",
             language=request.language or "en",
             subject=request.subject,
-            model_name=request.model_name or "gemma3:4b",
+            model_name=request.model_name or "gemma4",
         ),
         media_type="text/event-stream",
         headers={

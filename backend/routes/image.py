@@ -17,7 +17,7 @@ async def chat_image(
     file: UploadFile = File(...),
     prompt: str = Form(default="Please explain this image."),
     language: Optional[str] = Form(default="en"),
-    model_name: Optional[str] = Form(default="gemma3:4b"),
+    model_name: Optional[str] = Form(default="gemma4"),
 ):
     """
     Analyze an image (textbook/homework) with Gemma 4 multimodal.
@@ -46,7 +46,7 @@ async def chat_image(
             image_data=image_data,
             prompt=prompt or "Please explain this image.",
             language=language or "en",
-            model_name=model_name or "gemma3:4b",
+            model_name=model_name or "gemma4",
         ),
         media_type="text/event-stream",
         headers={

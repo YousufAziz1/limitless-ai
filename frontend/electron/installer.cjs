@@ -33,7 +33,7 @@ function downloadFile(url, destPath, onProgress) {
 
     const request = https.get(url, { followRedirects: true }, (res) => {
       // Handle redirects
-      if (res.statusCode === 301 || res.statusCode === 302) {
+      if ([301, 302, 303, 307, 308].includes(res.statusCode)) {
         fs.unlink(destPath, () => {})
         return downloadFile(res.headers.location, destPath, onProgress)
           .then(resolve)
